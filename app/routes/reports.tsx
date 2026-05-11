@@ -10,10 +10,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const [statusCount, monthlyData] = await Promise.all([
     prisma.order.groupBy({ by: ["status"], _sum: { amount: true }, _count: true, where: { deleted: false } }),
     prisma.$queryRaw<{ month: string | null; revenue: number; count: bigint }[]>`
-      SELECT strftime('%Y-%m', orderDate) as month, SUM(amount) as revenue, COUNT(*) as count
+      SELECT strftime('%Y-%m', orderDate / 1000, 'unixepoch') as month, SUM(amount) as revenue, COUNT(*) as count
       FROM "Order"
       WHERE deleted = false
-      GROUP BY strftime('%Y-%m', orderDate)
+      GROUP BY strftime('%Y-%m', orderDate / 1000, 'unixepoch')
       ORDER BY month DESC
       LIMIT 12
     `,
