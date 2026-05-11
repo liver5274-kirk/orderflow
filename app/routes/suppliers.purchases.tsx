@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
+import { useLoaderData, Link, Outlet, useLocation } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 import { prisma } from "~/db.server";
 
@@ -20,10 +20,14 @@ const statusColor: Record<string, string> = {
   "已取消": "bg-gray-100 text-gray-500",
 };
 
-const statusSteps = ["待確認", "已確認", "運送中", "已收貨"];
-
 export default function PurchaseList() {
   const { purchaseOrders } = useLoaderData<typeof loader>();
+  const location = useLocation();
+  const isChild = location.pathname !== "/suppliers/purchases";
+
+  if (isChild) {
+    return <Outlet />;
+  }
 
   return (
     <div>
