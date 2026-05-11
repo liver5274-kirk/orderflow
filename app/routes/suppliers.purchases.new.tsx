@@ -114,46 +114,45 @@ export default function NewPurchaseOrder() {
         </div>
 
         {/* Step 2: Add materials */}
-        <div>
-          <label className="block text-sm font-medium mb-2">訂購物料</label>
-          <p className="text-xs text-gray-400 mb-2">
-            以下為 JavaScript 輔助欄位（前端計算），使用 JavaScript 動態新增行。
-            如需多行物料，請先儲存後再到詳情頁編輯。
-          </p>
+        <fieldset className="border rounded-lg p-4">
+          <legend className="text-sm font-medium px-1">訂購物料 <span className="text-red-500">*</span></legend>
 
-          {/* Single static line */}
-          <div className="flex gap-2 items-start mb-2">
-            <select name="itemMaterialId" className="flex-1 p-2 border rounded-lg">
+          <div className="flex gap-2 items-start">
+            <select name="itemMaterialId" required className="flex-1 p-2.5 border rounded-lg">
               <option value="">選擇物料...</option>
               {materials.map((m) => (
                 <option key={m.id} value={m.id}>
-                  {m.name} ({m.category}) — 庫存 {m.currentStock} {m.unit}
+                  {m.name} ({m.category})
                 </option>
               ))}
             </select>
-            <input
-              name="itemQuantity"
-              type="number"
-              step="0.1"
-              min="0.1"
-              required
-              className="w-24 p-2 border rounded-lg"
-              placeholder="數量"
-            />
-            <input
-              name="itemUnitPrice"
-              type="number"
-              step="0.01"
-              min="0"
-              className="w-28 p-2 border rounded-lg"
-              placeholder="單價"
-            />
+            <div>
+              <input
+                name="itemQuantity"
+                type="number"
+                step="0.1"
+                min="0.1"
+                required
+                className="w-24 p-2.5 border rounded-lg"
+                placeholder="數量"
+              />
+            </div>
+            <div>
+              <input
+                name="itemUnitPrice"
+                type="number"
+                step="0.01"
+                min="0"
+                className="w-28 p-2.5 border rounded-lg"
+                placeholder="單價 (選填)"
+              />
+            </div>
             <span className="self-center text-xs text-gray-400">NT$</span>
           </div>
-          <p className="text-xs text-gray-400">
-            💡 目前支援單項物料。如需多項，請在建立後到詳情頁新增。
+          <p className="text-xs text-gray-400 mt-2">
+            💡 單項物料建立後，可在採購單詳情頁追加更多物料。
           </p>
-        </div>
+        </fieldset>
 
         {/* Step 3: Expected date & notes */}
         <div className="grid grid-cols-2 gap-4">
