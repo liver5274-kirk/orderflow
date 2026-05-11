@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData, Form, useSearchParams } from "@remix-run/react";
+import { useLoaderData, Form, useSearchParams, Outlet } from "@remix-run/react";
 import { requireUserId } from "~/session.server";
 import { prisma } from "~/db.server";
 
@@ -74,6 +74,7 @@ export default function Customers() {
           </tbody>
         </table>
       </div>
+      <Outlet />
     </div>
   );
 }
