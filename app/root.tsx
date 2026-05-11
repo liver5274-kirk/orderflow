@@ -21,6 +21,7 @@ const navItems = [
   { to: "/customers", label: "👤 客戶管理", icon: "👤" },
   { to: "/reports", label: "📈 報表", icon: "📈" },
   { to: "/inventory/materials", label: "📦 庫存", icon: "📦" },
+  { to: "/suppliers/list", label: "🔗 供應鏈", icon: "🔗" },
 ];
 
 export default function App() {

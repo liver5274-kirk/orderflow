@@ -45,6 +45,22 @@ model Order {
 
 // ── BOM & Inventory ──
 
+model Supplier {
+  id            String           @id @default(cuid())
+  name          String
+  contactPerson String           @default("")
+  phone         String           @default("")
+  email         String           @default("")
+  address       String           @default("")
+  taxId         String           @default("")
+  paymentTerms  String           @default("月結30天")
+  notes         String           @default("")
+  createdAt     DateTime         @default(now())
+
+  materials       Material[]
+  purchaseOrders  PurchaseOrder[]
+}
+
 model Material {
   id           String             @id @default(cuid())
   name         String
@@ -56,8 +72,42 @@ model Material {
   notes        String             @default("")
   createdAt    DateTime           @default(now())
 
-  bomItems      BOMItem[]
-  transactions  StockTransaction[]
+  supplierId   String?
+  supplier     Supplier?          @relation(fields: [supplierId], references: [id])
+
+  bomItems         BOMItem[]
+  transactions     StockTransaction[]
+  purchaseItems    PurchaseOrderItem[]
+}
+
+model PurchaseOrder {
+  id           String              @id @default(cuid())
+  orderNo      String              @unique
+  supplierId   String
+  status       String              @default("待確認")
+  totalAmount  Float               @default(0)
+  orderDate    DateTime            @default(now())
+  expectedDate DateTime?
+  receivedDate DateTime?
+  notes        String              @default("")
+  createdAt    DateTime            @default(now())
+
+  supplier  Supplier            @relation(fields: [supplierId], references: [id])
+  items     PurchaseOrderItem[]
+}
+
+model PurchaseOrderItem {
+  id              String  @id @default(cuid())
+  purchaseOrderId String
+  materialId      String
+  quantity        Float
+  unitPrice       Float
+  subtotal        Float
+
+  purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  material      Material      @relation(fields: [materialId], references: [id])
+
+  @@unique([purchaseOrderId, materialId])
 }
 
 model Product {
