@@ -13,6 +13,11 @@ if (process.env.NODE_ENV === "production") {
     global.__prisma = new PrismaClient();
   }
   prisma = global.__prisma;
+  // Detect if schema has changed — recreate client if models are missing
+  if (!prisma.material || typeof prisma.material.findMany !== "function") {
+    global.__prisma = new PrismaClient();
+    prisma = global.__prisma;
+  }
 }
 
 export { prisma };

@@ -42,3 +42,56 @@ model Order {
   createdBy  String
   user       User     @relation(fields: [createdBy], references: [id])
 }
+
+// ── BOM & Inventory ──
+
+model Material {
+  id           String             @id @default(cuid())
+  name         String
+  category     String             @default("原料")
+  unit         String             @default("個")
+  currentStock Float              @default(0)
+  minStock     Float              @default(10)
+  unitCost     Float              @default(0)
+  notes        String             @default("")
+  createdAt    DateTime           @default(now())
+
+  bomItems      BOMItem[]
+  transactions  StockTransaction[]
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  description String    @default("")
+  price       Float     @default(0)
+  createdAt   DateTime  @default(now())
+
+  bomItems    BOMItem[]
+}
+
+model BOMItem {
+  id         String  @id @default(cuid())
+  productId  String
+  materialId String
+  quantity   Float
+
+  product  Product  @relation(fields: [productId], references: [id])
+  material Material @relation(fields: [materialId], references: [id])
+
+  @@unique([productId, materialId])
+}
+
+model StockTransaction {
+  id         String   @id @default(cuid())
+  materialId String
+  type       String
+  quantity   Float
+  beforeStock Float
+  afterStock Float
+  reason     String   @default("")
+  orderNo    String   @default("")
+  createdAt  DateTime @default(now())
+
+  material Material @relation(fields: [materialId], references: [id])
+}
