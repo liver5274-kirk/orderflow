@@ -32,7 +32,7 @@ export default function Register() {
         <p className="text-gray-500 text-center mb-8">建立新帳號</p>
 
         <Form method="post" className="space-y-4">
-          {data?.error && (
+          {data && "error" in data && (
             <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{data.error}</div>
           )}
           <div>

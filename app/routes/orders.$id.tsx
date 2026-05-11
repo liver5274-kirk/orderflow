@@ -52,7 +52,7 @@ export default function OrderDetail() {
         <a href="/orders" className="text-gray-500 hover:text-gray-700">← 回列表</a>
       </div>
 
-      {data?.success && <div className="bg-green-50 text-green-600 p-3 rounded-lg mb-4">已更新</div>}
+      {data && "success" in data && <div className="bg-green-50 text-green-600 p-3 rounded-lg mb-4">已更新</div>}
 
       <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
         <h2 className="font-semibold mb-3">訂單資訊</h2>
@@ -65,7 +65,7 @@ export default function OrderDetail() {
       </div>
 
       <Form method="post" className="bg-white rounded-xl shadow-sm p-6 space-y-4">
-        {data?.error && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{data.error}</div>}
+        {data && "error" in data && <div className="bg-red-50 text-red-600 p-3 rounded-lg text-sm">{data.error}</div>}
 
         <div className="grid grid-cols-2 gap-4">
           <div>
